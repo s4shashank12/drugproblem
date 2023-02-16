@@ -1,10 +1,12 @@
 {
-  "name": "kyc",
+  "name": "drugs-problem",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "localnode": "npx hardhat node",
+    "deploy:local":  "npx hardhat run --network localhost scripts/deploy.js"
   },
   "keywords": [],
   "author": "",
