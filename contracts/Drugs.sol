@@ -32,6 +32,7 @@ contract Drugs {
         string expiryDate;
         string owner;
         string[] shipment;
+        string[] history;
     }
 
     /**
@@ -73,13 +74,24 @@ contract Drugs {
     }
 
     /**
-     * Modifier to check if company is already registered
+     * Modifier to check if company is a manufacturer
      */
     modifier onlyManufacturer(string memory _company) {
         require(
             companies[_company].organisationRole ==
                 OrganisationRole.Manufacturer,
             "Company is not a Manufacturer"
+        );
+        _;
+    }
+
+    /**
+     * Modifier to check if company is a retailer
+     */
+    modifier onlyRetailer(string memory _company) {
+        require(
+            companies[_company].organisationRole == OrganisationRole.Retailer,
+            "Company is not a Retailer"
         );
         _;
     }
@@ -263,6 +275,38 @@ contract Drugs {
             drugs[shipments[_shipmentId].assets[i]].shipment.push(_shipmentId);
             drugs[shipments[_shipmentId].assets[i]].owner = _buyerCRN;
         }
+    }
+
+    function retailDrug(
+        string memory _drugName,
+        string memory _serialNo,
+        string memory _retailerCRN,
+        string memory _customerAadhar
+    ) public alreadyRegistered(_retailerCRN) onlyRetailer(_retailerCRN) {
+        string memory _productID = string(
+            abi.encodePacked(_drugName, ":", _serialNo)
+        );
+        drugs[_productID].owner = _customerAadhar;
+    }
+
+    function viewHistory(
+        string memory _drugName,
+        string memory _serialNo
+    ) external view returns (string[] memory) {
+        string memory _productID = string(
+            abi.encodePacked(_drugName, ":", _serialNo)
+        );
+        return drugs[_productID].history;
+    }
+
+    function viewDrugCurrentState(
+        string memory _drugName,
+        string memory _serialNo
+    ) external view returns (string memory) {
+        string memory _productID = string(
+            abi.encodePacked(_drugName, ":", _serialNo)
+        );
+        return drugs[_productID].history[drugs[_productID].history.length - 1];
     }
 
     function compare(
