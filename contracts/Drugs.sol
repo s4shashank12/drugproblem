@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
+import "hardhat/console.sol";
+
 contract Drugs {
     enum OrganisationRole {
         Manufacturer,
@@ -65,10 +67,21 @@ contract Drugs {
     /**
      * Modifier to check if company is already registered
      */
+    modifier notAlreadyRegistered(string memory _company) {
+        require(
+            companies[_company].admin == address(0),
+            "Company is already registered"
+        );
+        _;
+    }
+
+    /**
+     * Modifier to check if company is already registered
+     */
     modifier alreadyRegistered(string memory _company) {
         require(
             companies[_company].admin != address(0),
-            "Company is already registered"
+            "Company is not registered"
         );
         _;
     }
@@ -139,6 +152,29 @@ contract Drugs {
         _;
     }
 
+    function toAsciiString(address _address) internal pure returns (string memory) {
+        bytes32 value = bytes32(uint256(uint160(_address)));
+        bytes memory result = new bytes(42);
+        result[0] = "0";
+        result[1] = "x";
+        for (uint256 i = 0; i < 20; i++) {
+            uint8 b = uint8(value[i]);
+            uint8 hi = b / 16;
+            uint8 lo = b - 16 * hi;
+            result[2 + 2 * i] = char(hi);
+            result[3 + 2 * i] = char(lo);
+        }
+        return string(result);
+    }
+
+    function char(uint8 b) internal pure returns (bytes1 c) {
+        if (b < 10) {
+            return bytes1(uint8(b) + 0x30);
+        } else {
+            return bytes1(uint8(b) + 0x57);
+        }
+    }
+
     /**
      * Funtion to add new companies
      */
@@ -147,10 +183,11 @@ contract Drugs {
         string memory _companyName,
         string memory _location,
         OrganisationRole _role
-    ) public alreadyRegistered(_companyCRN) {
+    ) public notAlreadyRegistered(_companyCRN) {
         companies[_companyCRN].companyID = _companyCRN;
         companies[_companyCRN].name = _companyName;
         companies[_companyCRN].location = _location;
+        companies[_companyCRN].admin = msg.sender;
         if (_role == OrganisationRole.Manufacturer) {
             companies[_companyCRN].organisationRole = _role;
             companies[_companyCRN].hierarchyKey = 1;
@@ -186,6 +223,8 @@ contract Drugs {
         drugs[_productID].expiryDate = _expiryDate;
         drugs[_productID].owner = _companyCRN;
         drugs[_productID].shipment = new string[](0);
+        drugs[_productID].history = new string[](0);
+        drugs[_productID].history.push("Drug added by Manufacturer");
     }
 
     /**

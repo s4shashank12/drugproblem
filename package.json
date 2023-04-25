@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "npx hardhat compile",
     "localnode": "npx hardhat node",
-    "deploy:local":  "npx hardhat run --network localhost scripts/deploy.js"
+    "deploy:local": "npx hardhat run --network localhost scripts/deploy.js"
   },
   "keywords": [],
   "author": "",
@@ -22,5 +22,10 @@
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.7.2",
     "hardhat": "^2.11.2"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "solc": "^0.8.19",
+    "web3": "^1.9.0"
   }
 }
