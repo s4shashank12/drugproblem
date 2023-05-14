@@ -17,49 +17,167 @@ const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Use Har
 
 const contractInstance = new web3.eth.Contract(contractABI, contractAddress);
 
-app.post('/registerCompany', async (req, res) => {
-    try {
-      const { companyCRN, companyName, location, role } = req.body;
-  
-      const accounts = await web3.eth.getAccounts(); // Use Hardhat accounts
-      const fromAddress = accounts[11];
-  
-      const gasEstimate = await contractInstance.methods
-        .registerCompany(companyCRN, companyName, location, role)
-        .estimateGas({ from: fromAddress });
-  
-      const result = await contractInstance.methods
-        .registerCompany(companyCRN, companyName, location, role)
-        .send({ from: fromAddress, gas: gasEstimate });
-  
-      res.status(200).json({ message: 'Company registered', result });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error registering company', error });
-    }
-  });
+const roles = ["Manufacturer", "Distributor", "Retailer", "Transporter"]
 
-  app.post('/addDrug', async (req, res) => {
-    try {
-      const { drugName, serialNumber, mafDate, expDate, companyCRN } = req.body;
-  
-      const accounts = await web3.eth.getAccounts(); // Use Hardhat accounts
-      const fromAddress = accounts[11];
-  
-      const gasEstimate = await contractInstance.methods
-        .addDrug(drugName, serialNumber, mafDate, expDate, companyCRN)
-        .estimateGas({ from: fromAddress });
-  
-      const result = await contractInstance.methods
-        .addDrug(drugName, serialNumber, mafDate, expDate, companyCRN)
-        .send({ from: fromAddress, gas: gasEstimate });
-  
-      res.status(200).json({ message: 'Company registered', result });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error registering company', error });
-    }
-  });
-  
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.post('/registerCompany', async (req, res) => {
+  try {
+    const { companyCRN, companyName, location, role } = req.body;
+
+    const accounts = await web3.eth.getAccounts(); // Use Hardhat accounts
+    const fromAddress = accounts[11];
+
+    const gasEstimate = await contractInstance.methods
+      .registerCompany(companyCRN, companyName, location, role)
+      .estimateGas({ from: fromAddress });
+
+    await contractInstance.methods
+      .registerCompany(companyCRN, companyName, location, role)
+      .send({ from: fromAddress, gas: gasEstimate });
+
+    const result = await contractInstance.methods.getRegisteredCompany(companyCRN).call();
+
+    console.log(roles);
+    res.status(200).json({
+      message: 'Company registered', result: {
+        companyID: result[0],
+        name: result[1],
+        location: result[2],
+        organisationRole: roles[result[3]],
+        hierarchyKey: +result[4]
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error registering company', error });
+  }
+});
+
+app.post('/addDrug', async (req, res) => {
+  try {
+    const { drugName, serialNumber, mafDate, expDate, companyCRN } = req.body;
+
+    const accounts = await web3.eth.getAccounts(); // Use Hardhat accounts
+    const fromAddress = accounts[11];
+
+    const gasEstimate = await contractInstance.methods
+      .addDrug(drugName, serialNumber, mafDate, expDate, companyCRN)
+      .estimateGas({ from: fromAddress });
+
+    await contractInstance.methods
+      .addDrug(drugName, serialNumber, mafDate, expDate, companyCRN)
+      .send({ from: fromAddress, gas: gasEstimate });
+
+    const result = await contractInstance.methods.getRegisteredDrug(drugName, serialNumber).call();
+
+    res.status(200).json({
+      message: 'Drug registered', result: {
+        productId: result[0],
+        name: result[1],
+        manufacturer: result[2],
+        manufacturingDate: result[3],
+        expiryDate: result[4],
+        owner: result[5],
+        shipment: result[6]
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error registering drug', error });
+  }
+});
+
+app.post('/createPO', async (req, res) => {
+  try {
+    const { buyerCRN, sellerCRN, drugName, quantity } = req.body;
+
+    const accounts = await web3.eth.getAccounts(); // Use Hardhat accounts
+    const fromAddress = accounts[11];
+
+    const gasEstimate = await contractInstance.methods
+      .createPO(buyerCRN, sellerCRN, drugName, quantity)
+      .estimateGas({ from: fromAddress });
+
+    await contractInstance.methods
+      .createPO(buyerCRN, sellerCRN, drugName, quantity)
+      .send({ from: fromAddress, gas: gasEstimate });
+
+    const result = await contractInstance.methods.getRegisteredPO(buyerCRN, drugName).call();
+    res.status(200).json({
+      message: 'PO Created', result: {
+        poId: result[0],
+        drugName: result[1],
+        buyer: result[3],
+        quantity: +result[2],
+        seller: result[4]
+      }
+    });
+  } catch (err) {
+    console.error(error);
+    res.status(500).json({ message: 'Error Creating PO', error });
+  }
+})
+
+app.post('/createShipment', async (req, res) => {
+  try {
+    const { buyerCRN, drugName, listOfAssets, transporterCRN } = req.body;
+
+    const accounts = await web3.eth.getAccounts(); // Use Hardhat accounts
+    const fromAddress = accounts[11];
+
+    const gasEstimate = await contractInstance.methods
+      .createShipment(buyerCRN, drugName, listOfAssets, transporterCRN)
+      .estimateGas({ from: fromAddress });
+
+    await contractInstance.methods
+      .createShipment(buyerCRN, drugName, listOfAssets, transporterCRN)
+      .send({ from: fromAddress, gas: gasEstimate });
+
+    const result = await contractInstance.methods.getRegisteredShipment(buyerCRN, drugName).call();
+    res.status(200).json({
+      message: 'Shipment Created', result: {
+        shipmentID: result[0],
+        creator: result[1],
+        assets: result[2],
+        transporter: result[3],
+        status: result[4]
+      }
+    });
+  } catch (err) {
+    console.error(error);
+    res.status(500).json({ message: 'Error Creating Shipment', error });
+  }
+})
+
+app.post('/updateShipment', async (req, res) => {
+  try {
+    const { buyerCRN, drugName, transporterCRN } = req.body;
+
+    const accounts = await web3.eth.getAccounts(); // Use Hardhat accounts
+    const fromAddress = accounts[11];
+
+    const gasEstimate = await contractInstance.methods
+      .updateShipment(buyerCRN, drugName, transporterCRN)
+      .estimateGas({ from: fromAddress });
+
+    await contractInstance.methods
+      .updateShipment(buyerCRN, drugName, transporterCRN)
+      .send({ from: fromAddress, gas: gasEstimate });
+
+    const result = await contractInstance.methods.getRegisteredShipment(buyerCRN, drugName).call();
+    res.status(200).json({
+      message: 'Shipment Updated', result: {
+        shipmentID: result[0],
+        creator: result[1],
+        assets: result[2],
+        transporter: result[3],
+        status: result[4]
+      }
+    });
+  } catch (err) {
+    console.error(error);
+    res.status(500).json({ message: 'Error Updating Shipment', error });
+  }
+})
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

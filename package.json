@@ -1,16 +1,17 @@
 {
   "name": "drugs-problem",
   "version": "1.0.0",
-  "description": "",
+  "description": "Drug Problem for Capstone Project",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "npx hardhat compile",
     "localnode": "npx hardhat node",
-    "deploy:local": "npx hardhat run --network localhost scripts/deploy.js"
+    "deploy:local": "npx hardhat run --network localhost ./deployments/deploy.js",
+    "server": "node ./backend/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Shashank Kumar Singh",
   "license": "ISC",
   "devDependencies": {
     "@ethereum-waffle/chai": "^3.4.4",

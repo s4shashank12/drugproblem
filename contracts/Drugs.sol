@@ -152,7 +152,9 @@ contract Drugs {
         _;
     }
 
-    function toAsciiString(address _address) internal pure returns (string memory) {
+    function toAsciiString(
+        address _address
+    ) internal pure returns (string memory) {
         bytes32 value = bytes32(uint256(uint160(_address)));
         bytes memory result = new bytes(42);
         result[0] = "0";
@@ -183,7 +185,7 @@ contract Drugs {
         string memory _companyName,
         string memory _location,
         OrganisationRole _role
-    ) public notAlreadyRegistered(_companyCRN) {
+    ) public notAlreadyRegistered(_companyCRN) returns (Company memory) {
         companies[_companyCRN].companyID = _companyCRN;
         companies[_companyCRN].name = _companyName;
         companies[_companyCRN].location = _location;
@@ -201,6 +203,13 @@ contract Drugs {
             companies[_companyCRN].organisationRole = _role;
             companies[_companyCRN].hierarchyKey = 0;
         }
+        return companies[_companyCRN];
+    }
+
+    function getRegisteredCompany(
+        string memory _companyCRN
+    ) public view returns (Company memory) {
+        return companies[_companyCRN];
     }
 
     /**
@@ -227,6 +236,16 @@ contract Drugs {
         drugs[_productID].history.push("Drug added by Manufacturer");
     }
 
+    function getRegisteredDrug(
+        string memory _drugName,
+        string memory _serialNumber
+    ) public view returns (Drug memory) {
+        string memory _productID = string(
+            abi.encodePacked(_drugName, ":", _serialNumber)
+        );
+        return drugs[_productID];
+    }
+
     /**
      * Funtion to create PO by the buyer
      */
@@ -249,6 +268,16 @@ contract Drugs {
         purchaseOrders[_poID].buyer = _buyerCRN;
         purchaseOrders[_poID].quantity = _quantity;
         purchaseOrders[_poID].seller = companies[_sellerCRN].companyID;
+    }
+
+    function getRegisteredPO(
+        string memory _buyerCRN,
+        string memory _drugName
+    ) public view returns (PurchaseOrder memory) {
+        string memory _poID = string(
+            abi.encodePacked(_buyerCRN, ":", _drugName)
+        );
+        return purchaseOrders[_poID];
     }
 
     /**
@@ -277,17 +306,30 @@ contract Drugs {
             "The length of listOfAssets should be exactly equal to the quantity specified in the PO."
         );
         for (uint i = 0; i < listOfAssets.length; i++) {
+            string memory _productID = string(
+                abi.encodePacked(_drugName, ":", listOfAssets[i])
+            );
             require(
-                compare(listOfAssets[i], drugs[listOfAssets[i]].productId),
+                compare(_productID, drugs[_productID].productId),
                 "The productId is not registered"
             );
-            drugs[listOfAssets[i]].owner = _transporterCRN;
+            drugs[_productID].owner = _transporterCRN;
         }
         shipments[_shipmentId].shipmentID = _shipmentId;
         shipments[_shipmentId].assets = listOfAssets;
         shipments[_shipmentId].creator = po.seller;
         shipments[_shipmentId].status = "In-Transit";
         shipments[_shipmentId].transporter = _transporterCRN;
+    }
+
+    function getRegisteredShipment(
+        string memory _buyerCRN,
+        string memory _drugName
+    ) public view returns (Shipment memory) {
+        string memory _shipmentId = string(
+            abi.encodePacked(_buyerCRN, ":", _drugName)
+        );
+        return shipments[_shipmentId];
     }
 
     /**
@@ -311,9 +353,13 @@ contract Drugs {
             "Transporter is different"
         );
         for (uint i = 0; i < shipments[_shipmentId].assets.length; i++) {
-            drugs[shipments[_shipmentId].assets[i]].shipment.push(_shipmentId);
-            drugs[shipments[_shipmentId].assets[i]].owner = _buyerCRN;
+            string memory _productID = string(
+                abi.encodePacked(_drugName, ":", shipments[_shipmentId].assets[i])
+            );
+            drugs[_productID].shipment.push(_shipmentId);
+            drugs[_productID].owner = _buyerCRN;
         }
+        shipments[_shipmentId].status = "Delivered";
     }
 
     function retailDrug(
