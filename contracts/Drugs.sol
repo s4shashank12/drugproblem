@@ -240,6 +240,7 @@ contract Drugs {
         string memory _drugName,
         string memory _serialNumber
     ) public view returns (Drug memory) {
+
         string memory _productID = string(
             abi.encodePacked(_drugName, ":", _serialNumber)
         );
@@ -313,6 +314,19 @@ contract Drugs {
                 compare(_productID, drugs[_productID].productId),
                 "The productId is not registered"
             );
+
+            drugs[_productID].history.push(
+                string(
+                    abi.encodePacked(
+                        "Drug dispatched by seller ",
+                        drugs[_productID].owner,
+                        " with transporter ",
+                        _transporterCRN,
+                        " for PO ",
+                        _poID
+                    )
+                )
+            );
             drugs[_productID].owner = _transporterCRN;
         }
         shipments[_shipmentId].shipmentID = _shipmentId;
@@ -345,6 +359,9 @@ contract Drugs {
         alreadyRegistered(_transporterCRN)
         allowedToUpdateShipment(_transporterCRN)
     {
+        string memory _poID = string(
+            abi.encodePacked(_buyerCRN, ":", _drugName)
+        );
         string memory _shipmentId = string(
             abi.encodePacked(_buyerCRN, ":", _drugName)
         );
@@ -354,7 +371,23 @@ contract Drugs {
         );
         for (uint i = 0; i < shipments[_shipmentId].assets.length; i++) {
             string memory _productID = string(
-                abi.encodePacked(_drugName, ":", shipments[_shipmentId].assets[i])
+                abi.encodePacked(
+                    _drugName,
+                    ":",
+                    shipments[_shipmentId].assets[i]
+                )
+            );
+            drugs[_productID].history.push(
+                string(
+                    abi.encodePacked(
+                        "Drug delivered by transporter ",
+                        _transporterCRN,
+                        " to buyer ",
+                        _buyerCRN,
+                        " for PO ",
+                        _poID
+                    )
+                )
             );
             drugs[_productID].shipment.push(_shipmentId);
             drugs[_productID].owner = _buyerCRN;
@@ -372,6 +405,16 @@ contract Drugs {
             abi.encodePacked(_drugName, ":", _serialNo)
         );
         drugs[_productID].owner = _customerAadhar;
+        drugs[_productID].history.push(
+            string(
+                abi.encodePacked(
+                    "Drug sold to customer with AADHAR ",
+                    _customerAadhar,
+                    " by retailer ",
+                    _retailerCRN
+                )
+            )
+        );
     }
 
     function viewHistory(
