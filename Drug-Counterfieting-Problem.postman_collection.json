@@ -1,0 +1,538 @@
+{
+	"info": {
+		"_postman_id": "61384ada-01d6-4965-981e-f2c82c06ee66",
+		"name": "Drug-Counterfieting-Problem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Initialisation",
+			"item": [
+				{
+					"name": "Paracetamol - 001",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyCRN\": \"MAN001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNumber\": \"001\",\r\n    \"mafDate\": \"JAN2020\",\r\n    \"expDate\": \"FEB2021\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/addDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"addDrug"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Paracetamol - 002",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyCRN\": \"MAN001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNumber\": \"002\",\r\n    \"mafDate\": \"JAN2021\",\r\n    \"expDate\": \"MAR2021\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/addDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"addDrug"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Paracetamol - 003",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyCRN\": \"MAN001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNumber\": \"003\",\r\n    \"mafDate\": \"JAN2022\",\r\n    \"expDate\": \"MAR2023\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/addDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"addDrug"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Paracetamol  - 004",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyCRN\": \"MAN001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNumber\": \"004\",\r\n    \"mafDate\": \"JAN2023\",\r\n    \"expDate\": \"MAR2024\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/addDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"addDrug"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sun Pharma - Manufacturer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyCRN\": \"MAN001\",\r\n    \"companyName\": \"Sun Pharma\",\r\n    \"location\": \"Chennai\",\r\n    \"role\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/registerCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"registerCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FedEx - Transporter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyCRN\": \"TRAN001\",\r\n    \"companyName\": \"FedEx\",\r\n    \"location\": \"Delhi\",\r\n    \"role\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/registerCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"registerCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BlueDart - Transporter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyCRN\": \"TRAN002\",\r\n    \"companyName\": \"BlueDart\",\r\n    \"location\": \"Bangalore\",\r\n    \"role\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/registerCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"registerCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VG Pharma - Distributer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyCRN\": \"DIST001\",\r\n    \"companyName\": \"VG Pharma\",\r\n    \"location\": \"Vizag\",\r\n    \"role\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/registerCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"registerCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upgrad - Retailer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyCRN\": \"RET001\",\r\n    \"companyName\": \"Upgrad\",\r\n    \"location\": \"Mumbai\",\r\n    \"role\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/registerCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"registerCompany"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Supply Chain",
+			"item": [
+				{
+					"name": "Supply Chain - PartA",
+					"item": [
+						{
+							"name": "Create PO",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"buyerCRN\": \"DIST001\",\r\n    \"sellerCRN\": \"MAN001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"quantity\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/createPO",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"createPO"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Shipment",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"buyerCRN\": \"DIST001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"listOfAssets\": [\"001\", \"002\", \"003\"],\r\n    \"transporterCRN\": \"TRAN002\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/createShipment",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"createShipment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Shipment",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"buyerCRN\": \"DIST001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"transporterCRN\": \"TRAN002\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/updateShipment",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"updateShipment"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Supply Chain - PartB",
+					"item": [
+						{
+							"name": "Create PO",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"buyerCRN\": \"RET001\",\r\n    \"sellerCRN\": \"DIST001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"quantity\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/createPO",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"createPO"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Shipment",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"buyerCRN\": \"RET001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"listOfAssets\": [\"001\", \"002\"],\r\n    \"transporterCRN\": \"TRAN002\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/createShipment",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"createShipment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Shipment",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"buyerCRN\": \"RET001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"transporterCRN\": \"TRAN002\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/updateShipment",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"updateShipment"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Supply Chain - PartC",
+					"item": [
+						{
+							"name": "Retail Drug",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNumber\": \"001\",\r\n    \"retailerCRN\": \"RET001\",\r\n    \"customerAadhar\": \"AAD001\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/retailDrug",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"retailDrug"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "View History",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNumber\": \"001\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/viewHistory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"viewHistory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Drug Current State",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNumber\": \"001\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/viewDrugCurrentState",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"viewDrugCurrentState"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
